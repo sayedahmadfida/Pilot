@@ -1,5 +1,5 @@
 {
-  "name": "fida/crud-generator",
+  "name": "fida/laravel-crud-generator",
   "description": "Laravel CRUD Generator package",
   "type": "library",
   "license": "MIT",
