@@ -6,6 +6,17 @@ The package automatically creates all necessary backend and frontend files inclu
 
 ---
 
+## Create New Laravel Project
+
+If you are starting a new project, run:
+
+```bash
+laravel new projectName
+cd projectName
+```
+
+---
+
 ## Installation
 
 Install the package using Composer:
@@ -40,6 +51,22 @@ php artisan pilot:crud ModelName
 
 ```bash
 php artisan pilot:crud Product
+```
+
+---
+
+## Run The Project
+
+Start the Laravel development server:
+
+```bash
+php artisan serve
+```
+
+Then open your browser and navigate to:
+
+```
+http://localhost:8000
 ```
 
 ---
@@ -80,25 +107,44 @@ The `pilot:crud` command will automatically generate:
 
 ## Workflow
 
-1. Install the package
+1. Create a new Laravel project:
+
+```bash
+laravel new projectName
+cd projectName
+```
+
+2. Install the CRUD generator package:
 
 ```bash
 composer require fida/laravel-crud-generator
 ```
 
-2. Configure the admin template
+3. Configure the admin template:
 
 ```bash
 php artisan pilot:config
 ```
 
-3. Generate CRUD module
+4. Generate CRUD module:
 
 ```bash
 php artisan pilot:crud ModelName
 ```
 
-Your CRUD module will be ready to use.
+5. Start the server and view your project:
+
+```bash
+php artisan serve
+```
+
+Open your browser at:
+
+```
+http://localhost:8000
+```
+
+Your CRUD module will now be ready to use.
 
 ---
 
