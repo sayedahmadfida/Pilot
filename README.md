@@ -11,8 +11,8 @@ The package automatically creates all necessary backend and frontend files inclu
 If you are starting a new project, run:
 
 ```bash
-laravel new projectName
-cd projectName
+laravel new my-project
+cd my-project
 ```
 
 ---
