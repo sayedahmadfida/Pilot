@@ -2,6 +2,7 @@
   "name": "fida/laravel-crud-generator",
   "description": "Laravel CRUD generator",
   "type": "library",
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "Fida\\Crud\\": "src/"
