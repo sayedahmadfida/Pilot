@@ -86,10 +86,10 @@ database/migrations/
 
 public/assets/js/product.js
 
-resources/views/pages/index.blade.php
-resources/views/pages/create.blade.php
-resources/views/pages/edit.blade.php
-resources/views/pages/table.blade.php
+resources/views/pages/product/index.blade.php
+resources/views/pages/product/create.blade.php
+resources/views/pages/product/edit.blade.php
+resources/views/pages/product/table.blade.php
 ```
 
 It will also automatically create a **products route** inside the `web.php` file.
@@ -148,13 +148,19 @@ Add inputs inside:
 resources/views/pages/create.blade.php
 ```
 
+### Step 3 — Frontend Validation
+
+```
+public/assets/js/product.js
+```
 Example validation:
 
-```javascript
+```JavaScript
 $('#create-product-form').validate({
 
     rules: {
-        product: { required: true }
+        product: { required: true },
+        // more fields
     },
 
     submitHandler: (form) => {
@@ -164,7 +170,7 @@ $('#create-product-form').validate({
 });
 ```
 
-### Step 3 — Backend Validation
+### Step 4 — Backend Validation
 
 Add validation rules inside:
 
@@ -172,6 +178,15 @@ Add validation rules inside:
 app/Http/Requests/ProductRequest.php
 ```
 
+Example validation:
+```
+public function rules(): array
+{
+    return [
+        'product' => 'required|string|max:255',
+    ];
+}
+```
 ---
 
 # Editing Records
@@ -206,5 +221,3 @@ Although this package configures **AdminLTE v4**, you can replace it with **any 
 
 This package is open-source and available under the **MIT License**.
 
-```
-```
