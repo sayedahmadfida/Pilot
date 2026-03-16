@@ -71,7 +71,7 @@ After these files are created, **AdminLTE v4 will be fully configured and ready 
 Run the CRUD generation command:
 
 ```bash
-php artisan pilot:crud
+php artisan pilot:crud Product
 ```
 
 This command generates the following files:
