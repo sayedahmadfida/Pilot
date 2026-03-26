@@ -10,7 +10,10 @@ class GeneralJsGenerator
 
         // Prevent overwrite
         if (file_exists($path)) {
-            return;
+            return [
+                'status' => 'exists',
+                'message' => "general.js already exists at:\n".$path,
+            ];
         }
 
         // Ensure directory exists
@@ -157,5 +160,9 @@ $.ajaxSetup({
 JS;
 
         file_put_contents($path, $content);
+        return [
+            'status' => 'created',
+            'message' => "general.js created at:\n".$path,
+        ];
     }
 }
