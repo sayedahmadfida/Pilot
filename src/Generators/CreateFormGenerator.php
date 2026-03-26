@@ -15,7 +15,10 @@ class CreateFormGenerator
 
         // Prevent overwrite
         if (file_exists($viewPath)) {
-            return;
+            return[
+                'status' => 'exists',
+                'message' => "Create form for {$name} already exists at:\n".$viewPath,
+            ];
         }
 
         // Ensure directory exists
@@ -68,5 +71,9 @@ class CreateFormGenerator
 BLADE;
 
         file_put_contents($viewPath, $content);
+        return [
+            'status' => 'created',
+            'message' => "Create form for {$name} created at:\n".$viewPath,
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Fida\Crud\Generators;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class MigrationGenerator
@@ -18,9 +19,17 @@ class MigrationGenerator
 
         $migrationPath = database_path("migrations/{$migrationName}");
 
-        if (file_exists($migrationPath)) {
-            return;
+
+        $existingFiles = File::files(database_path('migrations'));
+        foreach ($existingFiles as $file) {
+            if (Str::contains($file->getFilename(), "create_{$plural}_table.php")) {
+                return [
+                    'status' => 'exists',
+                    'message' => "Migration already exists:\n" . $file->getPathname(),
+                ];
+            }
         }
+
 
         $content = "<?php
 
@@ -47,5 +56,9 @@ return new class extends Migration
 ";
 
         file_put_contents($migrationPath, $content);
+        return [
+            'status' => 'created',
+            'message' => "Migration for {$name} created at:\n".$migrationPath,
+        ];
     }
 }
