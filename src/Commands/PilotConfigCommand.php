@@ -33,7 +33,7 @@ class PilotConfigCommand extends Command
         $this->outputResult((new HeaderGenerator())->generate());
         $this->outputResult((new ScriptGenerator())->generate());
         $this->outputResult((new GeneralJsGenerator())->generate());
-        // $this->outputResult((new FooterGenerator())->generate());
+        $this->outputResult((new FooterGenerator())->generate());
 
         $this->info('Pilot setup completed.');
     }

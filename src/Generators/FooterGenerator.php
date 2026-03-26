@@ -14,7 +14,10 @@ class FooterGenerator
 
         // Check if file already exists
         if (File::exists($layoutPath)) {
-            return "Footer layout already exists!";
+            return [
+                'status' => 'exists',
+                'message' => "Footer layout already exists at:\n".$layoutPath,
+            ];
         }
 
         // Ensure layouts directory exists
@@ -40,6 +43,9 @@ class FooterGenerator
 
         File::put($layoutPath, $content);
 
-        return "Footer layout created successfully!";
+        return [
+            'status' => 'created',
+            'message' => "Footer layout created at:\n".$layoutPath,
+        ];
     }
 }
