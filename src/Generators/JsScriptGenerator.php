@@ -15,7 +15,10 @@ class JsScriptGenerator
         $jsPath = public_path("assets/js/{$modelLower}.js");
 
         if (file_exists($jsPath)) {
-            return;
+            return[
+                'status' => 'exists',
+                'message' => "JavaScript for {$name} already exists at:\n".$jsPath,
+            ];
         }
 
         // Create directory if not exists
@@ -208,5 +211,9 @@ $(document).ready(function () {
     {$model}.init();
 });";
         file_put_contents($jsPath, $content);
+        return [
+            'status' => 'created',
+            'message' => "JavaScript for {$name} created at:\n".$jsPath,
+        ];
     }
 }
