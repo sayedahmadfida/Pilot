@@ -25,16 +25,25 @@ class PilotConfigCommand extends Command
     {
         $this->info('Pilot configuration started...');
 
-        $this->line((new ConfigGenerator())->generate());
-        $this->line((new LayoutCssGenerator())->generate());
-        $this->line((new AppGenerator())->generate());
-        $this->line((new SidebarGenerator())->generate());
-        $this->line((new HeadGenerator())->generate());
-        $this->line((new HeaderGenerator())->generate());
-        $this->line((new ScriptGenerator())->generate());
-        $this->line((new GeneralJsGenerator())->generate());
-        $this->line((new FooterGenerator())->generate());
+        // $this->outputResult((new ConfigGenerator())->generate());
+        $this->outputResult((new LayoutCssGenerator())->generate());
+        // $this->outputResult((new AppGenerator())->generate());
+        // $this->outputResult((new SidebarGenerator())->generate());
+        // $this->outputResult((new HeadGenerator())->generate());
+        // $this->outputResult((new HeaderGenerator())->generate());
+        // $this->outputResult((new ScriptGenerator())->generate());
+        // $this->outputResult((new GeneralJsGenerator())->generate());
+        // $this->outputResult((new FooterGenerator())->generate());
 
         $this->info('Pilot setup completed.');
+    }
+
+    protected function outputResult($result)
+    {
+        if ($result['status'] === 'exists') {
+            $this->info($result['message']); 
+        } else {
+            $this->line($result['message']); 
+        }
     }
 }
