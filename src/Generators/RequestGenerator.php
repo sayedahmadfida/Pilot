@@ -15,7 +15,10 @@ class RequestGenerator
 
         // Prevent overwrite
         if (file_exists($requestPath)) {
-            return;
+            return[
+                'status' => 'exists',
+                'message' => "{$model}Request already exists at:\n".$requestPath,
+            ];
         }
 
         // Ensure directory exists
@@ -56,5 +59,9 @@ class {$model}Request extends FormRequest
 PHP;
 
         file_put_contents($requestPath, $content);
+        return [
+            'status' => 'created',
+            'message' => "{$model}Request created at:\n".$requestPath,
+        ];
     }
 }
