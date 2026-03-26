@@ -1,7 +1,6 @@
 <?php
 
 namespace Fida\Crud\Generators;
-
 class ConfigGenerator
 {
     public function generate()
@@ -20,11 +19,11 @@ return [
 
             file_put_contents($configPath, $content);
 
-            echo "pilot.php config file created.\n";
+            return "pilot.php config file created at: " . $configPath;
 
         } else {
 
-            echo "pilot.php already exists.\n";
+            return "pilot.php already exists at: " . $configPath;
 
         }
     }
