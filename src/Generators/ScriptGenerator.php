@@ -14,7 +14,10 @@ class ScriptGenerator
 
         // Check if file already exists
         if (File::exists($layoutPath)) {
-            return "Script layout already exists!";
+            return [
+              'status' => 'exists',
+              'message' => "Script layout already exists at:\n".$layoutPath,
+            ];
         }
 
         // Ensure layouts directory exists
@@ -83,6 +86,9 @@ class ScriptGenerator
 
         File::put($layoutPath, $content);
 
-        return "Script layout created successfully!";
+        return [
+            'status' => 'created',
+            'message' => "Script layout created at:\n".$layoutPath,
+        ];
     }
 }

@@ -28,10 +28,10 @@ class PilotConfigCommand extends Command
         $this->outputResult((new ConfigGenerator())->generate());
         // $this->outputResult((new LayoutCssGenerator())->generate());
         $this->outputResult((new AppGenerator())->generate());
-        // $this->outputResult((new SidebarGenerator())->generate());
-        // $this->outputResult((new HeadGenerator())->generate());
-        // $this->outputResult((new HeaderGenerator())->generate());
-        // $this->outputResult((new ScriptGenerator())->generate());
+        $this->outputResult((new SidebarGenerator())->generate());
+        $this->outputResult((new HeadGenerator())->generate());
+        $this->outputResult((new HeaderGenerator())->generate());
+        $this->outputResult((new ScriptGenerator())->generate());
         // $this->outputResult((new GeneralJsGenerator())->generate());
         // $this->outputResult((new FooterGenerator())->generate());
 

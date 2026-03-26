@@ -21,14 +21,14 @@ return [
 
             return [
                 'status' => 'created',
-                'message' => "pilot.php config file created at: " . $configPath,
+                'message' => "pilot.php config file created at:\n".$configPath,
             ];
 
         } else {
 
             return [
                 'status' => 'exists',
-                'message' => "pilot.php config file already exists at: " . $configPath,
+                'message' => "pilot.php config file already exists at:\n".$configPath,
             ];
 
         }

@@ -14,7 +14,10 @@ class HeaderGenerator
 
         // Check if file already exists
         if (File::exists($layoutPath)) {
-            return "Header layout already exists!";
+            return [
+              'status' => 'exists',
+              'message' => "Header layout already exists at:\n".$layoutPath,
+            ];
         }
 
         // Ensure layouts directory exists
@@ -220,6 +223,9 @@ class HeaderGenerator
 
         File::put($layoutPath, $content);
 
-        return "Head layout created successfully!";
+        return [
+            'status' => 'created',
+            'message' => "Head layout created at:\n".$layoutPath,
+        ];
     }
 }

@@ -14,7 +14,10 @@ class SidebarGenerator
 
         // Check if file already exists
         if (File::exists($layoutPath)) {
-            return "Sidebar layout already exists!";
+            return [
+                'status' => 'exists',
+                'message' => "Sidebar layout already exists at:\n".$layoutPath,
+            ];
         }
 
         // Ensure layouts directory exists
@@ -58,6 +61,9 @@ class SidebarGenerator
 
         File::put($layoutPath, $content);
 
-        return "Sidebar layout created successfully!";
+        return [
+            'status' => 'created',
+            'message' => "Sidebar layout created at:\n".$layoutPath,
+        ];
     }
 }
