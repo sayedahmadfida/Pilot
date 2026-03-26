@@ -14,7 +14,10 @@ class AppGenerator
 
         // Check if file already exists
         if (File::exists($layoutPath)) {
-            return "App layout already exists!";
+            return [
+              'status' => 'exists',
+              'message' => "App layout already exists at: " . $layoutPath,
+            ];
         }
 
         // Ensure layouts directory exists
@@ -60,6 +63,9 @@ class AppGenerator
 
         File::put($layoutPath, $content);
 
-        return "App layout created successfully!";
+        return [
+            'status' => 'created',
+            'message' => "App layout created at: " . $layoutPath,
+        ];
     }
 }

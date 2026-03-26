@@ -25,9 +25,9 @@ class PilotConfigCommand extends Command
     {
         $this->info('Pilot configuration started...');
 
-        // $this->outputResult((new ConfigGenerator())->generate());
-        $this->outputResult((new LayoutCssGenerator())->generate());
-        // $this->outputResult((new AppGenerator())->generate());
+        $this->outputResult((new ConfigGenerator())->generate());
+        // $this->outputResult((new LayoutCssGenerator())->generate());
+        $this->outputResult((new AppGenerator())->generate());
         // $this->outputResult((new SidebarGenerator())->generate());
         // $this->outputResult((new HeadGenerator())->generate());
         // $this->outputResult((new HeaderGenerator())->generate());

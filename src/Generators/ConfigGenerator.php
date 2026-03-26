@@ -19,11 +19,17 @@ return [
 
             file_put_contents($configPath, $content);
 
-            return "pilot.php config file created at: " . $configPath;
+            return [
+                'status' => 'created',
+                'message' => "pilot.php config file created at: " . $configPath,
+            ];
 
         } else {
 
-            return "pilot.php already exists at: " . $configPath;
+            return [
+                'status' => 'exists',
+                'message' => "pilot.php config file already exists at: " . $configPath,
+            ];
 
         }
     }
