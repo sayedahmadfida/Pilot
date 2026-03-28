@@ -15,9 +15,9 @@ class JsScriptGenerator
         $jsPath = public_path("assets/js/{$modelLower}.js");
 
         if (file_exists($jsPath)) {
-            return[
+            return [
                 'status' => 'exists',
-                'message' => "JavaScript for {$name} already exists at:\n".$jsPath,
+                'message' => "JavaScript for {$name} already exists at:\n" . $jsPath,
             ];
         }
 
@@ -26,25 +26,65 @@ class JsScriptGenerator
             mkdir(dirname($jsPath), 0755, true);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | RENDER COLUMNS
+        |--------------------------------------------------------------------------
+        */
         $renderColumns = "";
 
-foreach ($columns as $col) {
+        foreach ($columns as $col) {
 
-    // Skip ID (already using loop index)
-    if ($col['name'] === 'id') {
-        continue;
-    }
+            if ($col['name'] === 'id') {
+                continue;
+            }
 
-    // Format created_at nicely
-    if ($col['name'] === 'created_at') {
-        $renderColumns .= "<td>\${{$modelLower}.created_at_formatted}</td>";
-    } else {
-        $renderColumns .= "<td>\${{$modelLower}.{$col['name']}}</td>";
-    }
-}
+            if ($col['name'] === 'created_at') {
+                continue; // handled separately
+            }
 
+            $renderColumns .= "<td>\${{$modelLower}.{$col['name']} ?? ''}</td>";
+        }
 
+        /*
+        |--------------------------------------------------------------------------
+        | EDIT FIELDS (DYNAMIC)
+        |--------------------------------------------------------------------------
+        */
+        $editFields = "";
 
+        foreach ($columns as $col) {
+
+            if (in_array($col['name'], ['id', 'created_at', 'updated_at'])) {
+                continue;
+            }
+
+            $field = $col['name'];
+
+            // Checkbox (boolean)
+            if (Str::contains($col['type'], ['boolean'])) {
+
+                $editFields .= "
+                    if(res.{$modelLower}.{$field}) {
+                        $('#edit-{$field}').prop('checked', true);
+                    } else {
+                        $('#edit-{$field}').prop('checked', false);
+                    }
+                ";
+
+            } else {
+
+                $editFields .= "
+                    $('#edit-{$field}').val(res.{$modelLower}.{$field} ?? '');
+                ";
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | FILE CONTENT
+        |--------------------------------------------------------------------------
+        */
         $content = "
 const {$model} = {
 
@@ -55,12 +95,15 @@ const {$model} = {
     },
 
     events() {
-
         $(document).on('click', '.delete-{$modelLower}', (e) => this.delete(e));
         $(document).on('click', '.edit-{$modelLower}', (e) => this.edit(e));
-
     },
 
+    /*
+    |--------------------------------------------------------------------------
+    | CREATE
+    |--------------------------------------------------------------------------
+    */
     create() {
 
         $('#create-{$modelLower}-form').validate({
@@ -98,6 +141,11 @@ const {$model} = {
 
     },
 
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE
+    |--------------------------------------------------------------------------
+    */
     update() {
 
         $('#edit-{$modelLower}-form').validate({
@@ -137,6 +185,11 @@ const {$model} = {
 
     },
 
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE
+    |--------------------------------------------------------------------------
+    */
     delete(event) {
 
         event.preventDefault();
@@ -164,6 +217,11 @@ const {$model} = {
 
     },
 
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT (DYNAMIC)
+    |--------------------------------------------------------------------------
+    */
     edit(event) {
 
         event.preventDefault();
@@ -177,7 +235,11 @@ const {$model} = {
 
         .then(res => {
 
-            $('#edit-{$modelLower}-name').val(res.{$modelLower}.name);
+            // Reset form first
+            $('#edit-{$modelLower}-form')[0].reset();
+
+            {$editFields}
+
             $('#edit-{$modelLower}-id').val(id);
 
             $('#edit-{$modelLower}-modal').modal('show');
@@ -186,55 +248,62 @@ const {$model} = {
 
     },
 
+    /*
+    |--------------------------------------------------------------------------
+    | RENDER TABLE
+    |--------------------------------------------------------------------------
+    */
     render({$plural}) {
 
-    const tbody = $('#{$modelLower}-table-body');
+        const tbody = $('#{$modelLower}-table-body');
 
-    tbody.empty();
+        tbody.empty();
 
-    let startIndex = {$plural}.from || 0;
+        let startIndex = {$plural}.from || 0;
 
-    {$plural}.data.forEach(({$modelLower}, index) => {
+        {$plural}.data.forEach(({$modelLower}, index) => {
 
-        tbody.append(`
-            <tr>
-                <td>\${startIndex + index}</td>
-                {$renderColumns}
-                
-                <td>\${{$modelLower}.created_at_formatted}</td>
-                <td>
-                    <div class=\"d-flex justify-content-evenly\">
+            tbody.append(\`
+                <tr>
+                    <td>\${startIndex + index}</td>
+                    {$renderColumns}
+                    <td>\${{$modelLower}.created_at_formatted ?? ''}</td>
+                    <td>
+                        <div class=\"d-flex justify-content-evenly\">
 
-                        <a href=\"#\"
-                           class=\"delete-{$modelLower}\"
-                           data-id=\"\${{$modelLower}.encrypted_id}\">
-                           <i class=\"fa-solid fa-trash text-danger\"></i>
-                        </a>
+                            <a href=\"#\"
+                               class=\"delete-{$modelLower}\"
+                               data-id=\"\${{$modelLower}.encrypted_id}\">
+                               <i class=\"fa-solid fa-trash text-danger\"></i>
+                            </a>
 
-                        <a href=\"#\"
-                           class=\"edit-{$modelLower}\"
-                           data-id=\"\${{$modelLower}.encrypted_id}\">
-                           <i class=\"fa-solid fa-pen-to-square text-success\"></i>
-                        </a>
+                            <a href=\"#\"
+                               class=\"edit-{$modelLower}\"
+                               data-id=\"\${{$modelLower}.encrypted_id}\">
+                               <i class=\"fa-solid fa-pen-to-square text-success\"></i>
+                            </a>
 
-                    </div>
-                </td>
-            </tr>
-        `);
+                        </div>
+                    </td>
+                </tr>
+            \`);
 
-    });
+        });
 
-}
+    }
 
 };
 
 $(document).ready(function () {
     {$model}.init();
-});";
+});
+";
+
         file_put_contents($jsPath, $content);
+
         return [
             'status' => 'created',
-            'message' => "JavaScript for {$name} created at:\n".$jsPath,
+            'message' => "JavaScript for {$name} created at:\n" . $jsPath,
         ];
     }
 }
