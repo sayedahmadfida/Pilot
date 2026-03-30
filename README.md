@@ -70,8 +70,11 @@ After these files are created, **AdminLTE v4 will be fully configured and ready 
 
 Run the CRUD generation command:
 
+php artisan pilot:crud ModelName --columns="table_column_name:column_type:validation"
+
+Separate the columns using commas as delimiters.
 ```bash
-php artisan pilot:crud Product
+php artisan pilot:crud Product --columns="name:string:required|max:10,price:decimal:required|min:0,qty:integer:nullable"
 ```
 
 This command generates the following files:
