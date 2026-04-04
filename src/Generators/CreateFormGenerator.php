@@ -8,10 +8,11 @@ class CreateFormGenerator
 {
     public function generate($name, $columns = [])
     {
-        $model = Str::studly($name);
-        $modelLower = Str::lower($name);
+        $model = Str::studly($name);      // ProductList (for titles)
+$kebab = Str::kebab($name);      // product-list (for folder/URL)
+$variable = Str::camel($name);   // productList (for JS/IDs if needed)
 
-        $viewPath = resource_path("views/pages/{$modelLower}/create.blade.php");
+        $viewPath = resource_path("views/pages/{$kebab}/create.blade.php");
 
         if (file_exists($viewPath)) {
             return [
@@ -86,7 +87,7 @@ HTML;
         }
 
         $content = <<<BLADE
-<div class="modal fade" data-bs-backdrop="static" id="create-{$modelLower}-modal" tabindex="-1">
+<div class="modal fade" data-bs-backdrop="static" id="create-{$kebab}-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,7 +95,7 @@ HTML;
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <form action="#" id="create-{$modelLower}-form" method="POST" novalidate>
+            <form action="#" id="create-{$kebab}-form" method="POST" novalidate>
                 @csrf
 
                 <div class="modal-body">
@@ -108,7 +109,7 @@ HTML;
                         Close
                     </button>
 
-                    <button type="submit" class="btn btn-sm btn-primary" id="save-{$modelLower}">
+                    <button type="submit" class="btn btn-sm btn-primary" id="save-{$kebab}">
                         Save
                     </button>
 
