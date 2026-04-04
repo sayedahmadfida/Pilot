@@ -10,14 +10,14 @@ class ViewGenerator
     public function generate($name, $columns = [])
     {
         $nameLower = Str::lower($name);
-        $plural = Str::plural($nameLower);
-        $pageTitle = Str::title($plural);
+        $kebab = Str::kebab($name);      // ProductList → product-list
+        $plural = Str::plural($kebab);   // product-list → product-lists
+        $pageTitle = Str::title(str_replace('-', ' ', $plural));
+        $title = Str::title(str_replace('-', ' ', $kebab));
+        $folder = resource_path("views/pages/{$kebab}");
+        $viewPath = resource_path("views/pages/{$kebab}/index.blade.php");
 
-        $title = Str::title($nameLower);
 
-        $folder = resource_path("views/pages/{$nameLower}");
-
-        $viewPath = resource_path("views/pages/{$nameLower}/index.blade.php");
 
         if ($viewPath && file_exists($viewPath)) {
             return [
